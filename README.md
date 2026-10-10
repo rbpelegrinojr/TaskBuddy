@@ -13,7 +13,7 @@ submission, revision, approval) with **simulated** payments. Built for a capston
 
 ## Prerequisites
 PHP ≥ 8.1 (`pdo_mysql`, `mbstring`, `fileinfo`, `json`, `openssl`), MySQL 8, Composer (for the autoloader) or any PSR-4 autoload
-generation, PHPUnit 8.5+ for tests, Flutter 3.44.9 stable (Dart 3.12.2) for the mobile app — the reference toolchain; the project's `pubspec.yaml` allows Dart `>=3.3.0 <4.0.0`.
+generation, PHPUnit 8.5+ for tests, Flutter 3.44.9 stable (Dart 3.12.2) for the mobile app — the reference toolchain; `mobile/pubspec.yaml` requires Dart `>=3.12.0` and Flutter `>=3.44.0`.
 
 ## Backend
 ```bash
