@@ -31,6 +31,9 @@ final class InvitationService
             if ($req === null || (int)$req['client_id'] !== $clientId) {
                 throw ApiException::notFound('Request');
             }
+            if ($req['status'] === 'PENDING_ACCEPTANCE') {
+                throw ApiException::conflict('INVITATION_PENDING', 'This request already has a pending invitation.');
+            }
             if ($req['status'] !== 'OPEN') {
                 throw ApiException::conflict('INVALID_STATE', 'Providers can only be invited while the request is OPEN.');
             }
@@ -74,7 +77,7 @@ final class InvitationService
             Database::one('SELECT id FROM users WHERE id = ? FOR UPDATE', [$providerId]);
             $inv = $this->lockOwnedByProvider($invitationId, $providerId);
             if ($inv['status'] !== 'PENDING') {
-                throw ApiException::conflict('INVITATION_NOT_PENDING', 'This invitation is no longer pending (' . $inv['status'] . ').');
+                throw ApiException::conflict($inv['status'] === 'EXPIRED' ? 'INVITATION_EXPIRED' : 'INVITATION_NOT_PENDING', 'This invitation is no longer pending (' . $inv['status'] . ').');
             }
             if ($inv['expires_at'] <= Clock::sql()) {
                 throw ApiException::conflict('INVITATION_EXPIRED', 'This invitation has expired.');
@@ -121,7 +124,7 @@ final class InvitationService
         Database::transaction(function () use ($providerId, $invitationId): void {
             $inv = $this->lockOwnedByProvider($invitationId, $providerId);
             if ($inv['status'] !== 'PENDING') {
-                throw ApiException::conflict('INVITATION_NOT_PENDING', 'This invitation is no longer pending (' . $inv['status'] . ').');
+                throw ApiException::conflict($inv['status'] === 'EXPIRED' ? 'INVITATION_EXPIRED' : 'INVITATION_NOT_PENDING', 'This invitation is no longer pending (' . $inv['status'] . ').');
             }
             $req = Database::one('SELECT id, client_id, title FROM service_requests WHERE id = ?', [$inv['request_id']]);
             Database::run("UPDATE service_invitations SET status='DECLINED', pending_key=NULL, responded_at=? WHERE id=?", [Clock::sql(), $invitationId]);

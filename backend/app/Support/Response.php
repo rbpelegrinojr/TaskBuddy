@@ -56,6 +56,7 @@ final class Response
     public function send(): void
     {
         http_response_code($this->status);
+        header_remove('X-Powered-By');
         header('X-Content-Type-Options: nosniff');
         header('Cache-Control: no-store');
         foreach ($this->headers as $k => $v) {

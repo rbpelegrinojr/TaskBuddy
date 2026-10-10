@@ -146,6 +146,9 @@ final class Validator
             return null;
         }
         try {
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d{1,6})?)?(Z|[+-]\d{2}:?\d{2})?$/', $v)) {
+                throw new \InvalidArgumentException('format');
+            }
             $d = new DateTimeImmutable($v, new DateTimeZone('UTC'));
         } catch (\Exception) {
             $this->errors[$key] = 'Must be a valid ISO-8601 date and time.';
