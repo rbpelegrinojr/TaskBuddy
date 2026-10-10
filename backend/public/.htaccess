@@ -1,0 +1,13 @@
+# Route everything that is not an existing file to the front controller.
+Options -Indexes
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Never expose dotfiles or PHP sources other than the front controller.
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
