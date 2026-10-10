@@ -44,6 +44,9 @@ abstract class ApiTestCase extends TestCase
         if (!getenv('TB_TEST_DB_NAME')) {
             $this->markTestSkipped('TB_TEST_DB_NAME not set: integration tests need a MySQL test database.');
         }
+        if (stripos((string)getenv('TB_TEST_DB_NAME'), 'test') === false) {
+            $this->fail('Refusing to run: the integration tests truncate every table, so TB_TEST_DB_NAME must contain "test".');
+        }
         Clock::freeze(null);
         $this->resetDatabase();
         $this->storage = sys_get_temp_dir() . '/tb_storage_' . bin2hex(random_bytes(4));

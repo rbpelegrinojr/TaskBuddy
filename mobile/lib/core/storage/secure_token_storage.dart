@@ -16,10 +16,14 @@ class SecureTokenStorage {
     if (sessionJson == null || sessionJson.isEmpty) {
       return null;
     }
-    final decoded = jsonDecode(sessionJson);
-    if (decoded is Map<String, dynamic>) {
-      final token = decoded['token'];
-      return token?.toString();
+    try {
+      final decoded = jsonDecode(sessionJson);
+      if (decoded is Map<String, dynamic>) {
+        final token = decoded['token'];
+        return token?.toString();
+      }
+    } on FormatException {
+      return null;
     }
     return null;
   }
