@@ -1,0 +1,31 @@
+{
+  "name": "taskbuddy/backend",
+  "description": "TaskBuddy PHP REST API and shared business services",
+  "type": "project",
+  "license": "proprietary",
+  "require": {
+    "php": ">=8.2",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-mbstring": "*",
+    "ext-json": "*",
+    "ext-fileinfo": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.5 || ^9.6 || ^10.0 || ^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "TaskBuddy\\": "app/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TaskBuddy\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit --testsuite unit",
+    "test:integration": "phpunit --testsuite integration"
+  }
+}

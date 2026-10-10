@@ -1,0 +1,14 @@
+backend/.env
+backend/vendor/
+backend/storage/uploads/*
+backend/storage/logs/*
+!backend/storage/uploads/.gitkeep
+!backend/storage/logs/.gitkeep
+backend/.phpunit.result.cache
+.phpunit.cache/
+admin/.env
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins*
+mobile/.packages
+*.log

@@ -1,0 +1,5 @@
+<form class="card filters" method="get" action="<?= $e($url('/disputes')) ?>"><div><label for="status">Status</label><select id="status" name="status"><option value="">All</option><?php foreach (['OPEN','RESOLVED'] as $s): ?><option<?= $status === $s ? ' selected' : '' ?>><?= $e($s) ?></option><?php endforeach; ?></select></div><button class="btn" type="submit">Filter</button></form>
+<div class="card"><table><thead><tr><th>ID</th><th>Request</th><th>Opened by</th><th>Reason</th><th>Status</th><th>Resolution</th><th>Opened</th></tr></thead><tbody>
+<?php if (!$rows): ?><tr><td colspan="7" class="muted">No disputes.</td></tr><?php endif; ?>
+<?php foreach ($rows as $d): ?><tr><td><a href="<?= $e($url('/disputes/' . $d['id'])) ?>">#<?= $e($d['id']) ?></a></td><td>#<?= $e($d['request_id']) ?> <?= $e($d['title']) ?></td><td><?= $e($d['opened_by']) ?></td><td><?= $e(mb_substr($d['reason'], 0, 90)) ?></td><td><?= $badge($d['status']) ?></td><td><?= $e($d['resolution'] ?? '—') ?></td><td><?= $e($dt($d['created_at'])) ?></td></tr><?php endforeach; ?>
+</tbody></table><?= $pagerHtml ?></div>

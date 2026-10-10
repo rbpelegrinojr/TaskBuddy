@@ -1,0 +1,6 @@
+# Defence in depth: storage must live outside the web root; if it is ever exposed, deny everything.
+Require all denied
+<FilesMatch ".*">
+  Require all denied
+</FilesMatch>
+php_flag engine off
